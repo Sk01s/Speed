@@ -5,4 +5,5 @@ export const Images = {
   //     home: require("../assets/images/icons/home-icon.png"),
   //   },
   landing: require("../assets/images/landing.png"),
+  complete: require("../assets/images/complete.png"),
 };

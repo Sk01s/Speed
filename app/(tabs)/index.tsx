@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native";
 
-import EmailInputScreen from "@/Screens/EmailInputScreen";
+import PasswordInputScreen from "@/screens/PasswordInputScreen";
+import HomeScreen from "@/screens/HomeScreen";
 
-export default function HomeScreen() {
-  return <EmailInputScreen />;
+export default function Home() {
+  return <HomeScreen />;
 }
 
 const styles = StyleSheet.create({});

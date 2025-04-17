@@ -1,6 +1,6 @@
 import { useLogin, useUserProfile } from "@/features/auth/authQueries";
 import { setCurrentUser } from "@/features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStore";
 
 // Combines React Query + Redux logic
 export const useAuth = () => {

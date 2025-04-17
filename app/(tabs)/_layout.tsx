@@ -1,12 +1,28 @@
-import { Tabs } from "expo-router";
-import React from "react";
+import { Tabs, useRouter } from "expo-router";
+import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Colors } from "@/constants/Colors";
+import { useProfile } from "@/hooks/authHooks";
+import { ActivityIndicator } from "react-native";
 
 export default function TabLayout() {
+  const router = useRouter();
   const colorScheme = useColorScheme();
+  const { data, isError, isLoading } = useProfile();
 
+  // Handle navigation in useEffect
+  useEffect(() => {
+    if (!isLoading && (isError || !data)) {
+      // router.navigate("/auth");
+    }
+  }, [isLoading, isError, data]);
+
+  if (isLoading) {
+    return <ActivityIndicator size="large" style={{ flex: 1 }} />;
+  }
+
+  // if (!data) return null;
   return (
     <Tabs
       screenOptions={{

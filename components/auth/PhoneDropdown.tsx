@@ -12,6 +12,9 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import CountryFlag from "react-native-country-flag";
+import { responsiveFont } from "@/utils/scaling";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedText } from "../ThemedText";
 
 // Install required packages:
 // expo install react-native-flagkit @expo/vector-icons
@@ -35,26 +38,32 @@ const COUNTRIES: Country[] = [
   { code: "+7", name: "Russia", isoCode: "RU" },
   // Add more countries as needed...
 ];
+interface PhoneDropdownProps {
+  onSelect?: (code: string) => void;
+}
 
-const PhoneDropdown = () => {
+const PhoneDropdown = ({ onSelect }: PhoneDropdownProps) => {
+  const textColor = useThemeColor({}, "text");
+  const borderColor = useThemeColor(
+    { light: "#c5c5c5", dark: "#454545" },
+    "tint"
+  );
+
   const [selectedCountry, setSelectedCountry] = useState<Country>(COUNTRIES[0]);
   const [modalVisible, setModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredCountries = COUNTRIES.filter(
-    (country) =>
-      country.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      country.code.includes(searchQuery)
-  );
+  const handleSelect = (item: Country) => {
+    setSelectedCountry(item);
+    setModalVisible(false);
+    setSearchQuery("");
+    onSelect?.(item.code); // ← send selected code to parent
+  };
 
   const renderItem = ({ item }: { item: Country }) => (
     <TouchableOpacity
       style={styles.countryItem}
-      onPress={() => {
-        setSelectedCountry(item);
-        setModalVisible(false);
-        setSearchQuery("");
-      }}
+      onPress={() => handleSelect(item)}
     >
       <CountryFlag isoCode={item.isoCode} size={24} />
       <Text style={styles.countryCode}>{item.code}</Text>
@@ -62,15 +71,23 @@ const PhoneDropdown = () => {
     </TouchableOpacity>
   );
 
+  const filteredCountries = COUNTRIES.filter(
+    (country) =>
+      country.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      country.code.includes(searchQuery)
+  );
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.dropdownButton}
+        style={[styles.dropdownButton, { borderColor: borderColor }]}
         onPress={() => setModalVisible(true)}
       >
         <CountryFlag isoCode={selectedCountry.isoCode} size={24} />
-        <Text style={styles.selectedCode}>{selectedCountry.code}</Text>
-        <MaterialIcons name="arrow-drop-down" size={20} color="black" />
+        <ThemedText style={styles.selectedCode}>
+          {selectedCountry.code}
+        </ThemedText>
+        <MaterialIcons name="arrow-drop-down" size={20} color={textColor} />
       </TouchableOpacity>
 
       <Modal
@@ -120,7 +137,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   selectedCode: {
-    fontSize: 16,
+    fontSize: responsiveFont(16),
     paddingRight: 3,
   },
   modalContainer: {
@@ -136,7 +153,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     padding: 15,
-    fontSize: 16,
+    fontSize: responsiveFont(16),
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
   },
@@ -150,11 +167,11 @@ const styles = StyleSheet.create({
   },
   countryCode: {
     width: 60,
-    fontSize: 16,
+    fontSize: responsiveFont(16),
   },
   countryName: {
     flex: 1,
-    fontSize: 16,
+    fontSize: responsiveFont(16),
     color: "#666",
   },
 });

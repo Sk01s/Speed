@@ -1,18 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore } from "redux-persist";
 import rootReducer from "./rootReducer";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: rootReducer,
+  // Disable the default devTools since we’re using the Expo plugin
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, // Required for Redux Persist
     }),
+  // Include the devTools enhancer only in development
 });
 
 export const persistor = persistStore(store);
+
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
-export const useAppDispatch = () => useDispatch<AppDispatch>(); // Add this line
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

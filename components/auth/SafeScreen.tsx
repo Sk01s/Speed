@@ -2,31 +2,48 @@
 import React from "react";
 import { StyleSheet, StatusBar, Platform, View, ViewProps } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ThemedView } from "../ThemedView";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
 interface SafeScreenProps extends ViewProps {
   children: React.ReactNode;
-  statusBarBg?: string;
+  lightColor?: string;
+  darkColor?: string;
   statusBarStyle?: "dark-content" | "light-content";
 }
 
 export const SafeScreen = ({
   children,
   style,
-  statusBarBg = "#ffffff",
-  statusBarStyle = "dark-content",
+  lightColor,
+  darkColor,
+  statusBarStyle,
   ...rest
 }: SafeScreenProps) => {
   const insets = useSafeAreaInsets();
+  const colorScheme = useColorScheme();
+
+  // Get theme colors
+  const statusBarBackground = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "background"
+  );
+
+  // Determine status bar style
+  const defaultBarStyle =
+    colorScheme === "dark" ? "light-content" : "dark-content";
+  const barStyle = statusBarStyle || defaultBarStyle;
 
   return (
     <>
       <StatusBar
-        barStyle={statusBarStyle}
-        backgroundColor={statusBarBg}
+        barStyle={barStyle}
+        backgroundColor={statusBarBackground}
         translucent={Platform.OS === "android"}
       />
 
-      <View
+      <ThemedView
         style={[
           styles.container,
           {
@@ -34,14 +51,14 @@ export const SafeScreen = ({
               ios: insets.top,
               android: StatusBar.currentHeight,
             }),
-            backgroundColor: statusBarBg,
+            backgroundColor: statusBarBackground,
           },
           style,
         ]}
         {...rest}
       >
         {children}
-      </View>
+      </ThemedView>
     </>
   );
 };

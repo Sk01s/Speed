@@ -1,12 +1,8 @@
-import { View, Text } from "react-native";
 import React from "react";
+import Landing from "@/screens/LandingScreen";
 
 const index = () => {
-  return (
-    <View>
-      <Text>index</Text>
-    </View>
-  );
+  return <Landing />;
 };
 
 export default index;

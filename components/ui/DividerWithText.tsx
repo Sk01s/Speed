@@ -1,3 +1,4 @@
+import { responsiveFont } from "@/utils/scaling";
 import { View, Text, StyleSheet } from "react-native";
 
 export default function DividerWithText() {
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   },
   orText: {
     marginHorizontal: 10,
-    fontSize: 16,
+    fontSize: responsiveFont(16),
     color: "#777",
   },
 });

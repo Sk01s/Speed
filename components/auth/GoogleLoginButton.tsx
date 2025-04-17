@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
-import { ThemedButton } from "./ThemedButton"; // Adjust the import path as needed
+import { ThemedButton } from "../ThemedButton"; // Adjust the import path as needed
 import { useThemeColor } from "@/hooks/useThemeColor";
 
 export function GoogleLoginButton({ onPress }: { onPress: () => void }) {

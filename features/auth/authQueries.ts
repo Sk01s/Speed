@@ -16,12 +16,13 @@ export const useLogin = () => {
   });
 };
 
-export const useUserProfile = (userId: string) => {
+export const useUserProfile = (userId: string | null | undefined) => {
   return useQuery({
     queryKey: ["user", userId],
     queryFn: async () => {
       const response = await fetch(`/api/users/${userId}`);
       return response.json();
     },
+    enabled: !!userId, // <-- disables the query if userId is falsy
   });
 };

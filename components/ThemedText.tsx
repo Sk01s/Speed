@@ -1,5 +1,6 @@
 import { Text, type TextProps, StyleSheet } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { responsiveFont } from "@/utils/scaling";
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
@@ -41,21 +42,22 @@ export function ThemedText({
 }
 
 const styles = StyleSheet.create({
+  "text-sub": {},
   "text-base": {
-    fontSize: 16,
+    fontSize: responsiveFont(18),
     lineHeight: 24,
   },
   "text-xl": {
-    fontSize: 20,
+    fontSize: responsiveFont(22),
     fontWeight: "bold",
   },
   "text-3xl": {
-    fontSize: 24,
+    fontSize: responsiveFont(24),
     fontWeight: "600",
     lineHeight: 30,
   },
   "text-4xl": {
-    fontSize: 32,
+    fontSize: responsiveFont(32),
     fontWeight: "bold",
     lineHeight: 38,
     marginBottom: 20,
